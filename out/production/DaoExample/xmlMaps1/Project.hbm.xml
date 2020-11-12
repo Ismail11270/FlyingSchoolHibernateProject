@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+  <class name="model1.Project" table="PROJECTS">
+    <id name="id" type="int">
+      <column name="PROJ_ID"/>
+      <generator class="native"/>
+    </id>
+    <property name="name" type="java.lang.String" length="30"/>
+
+    <property name="startDate" type="java.time.LocalDate"/>
+
+    <property name="endDate" type="java.time.LocalDate"/>
+    
+    <property name="description" type="java.lang.String" length="500"/>
+
+    <set inverse="true" lazy="true" 
+        name="empTeam" table="EMP_PROJ">
+      <key foreign-key="FK_PROJ_EMP">
+          
+        <column name="PROJ_ID"/>
+      </key>
+      <many-to-many class="model1.Employee" column="EMP_ID"/>
+    </set>
+  </class>
+</hibernate-mapping>

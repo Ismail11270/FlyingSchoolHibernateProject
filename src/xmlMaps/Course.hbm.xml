@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="model.Course" table="COURSES">
+        <id name="id" type="int">
+            <column name="COURSE_ID"/>
+            <generator class="native"/>
+        </id>
+        <property name="certType" type="string">
+            <column name="CERT_TYPE"/>
+        </property>
+        <property name="description" type="string">
+            <column name="DESCRIPTION"/>
+        </property>
+        <property name="startDate" type="date">
+            <column name="START_DATE"/>
+        </property>
+        <property name="endDate" type="date">
+            <column name="END_DATE"/>
+        </property>
+        
+        <set name="students" table="COURSE_STUDENT" lazy="true" fetch="select" cascade="all">
+            <key>
+                <column name="COURSE_ID" not-null="true"/>
+            </key>
+            <many-to-many entity-name="model.Student">
+                <column name="STUDENT_ID" not-null="true"/>
+            </many-to-many>
+        </set>
+    </class> 
+</hibernate-mapping>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+  <class name="model1.Department" table="DEPARTEMENTS">
+    <id name="id" type="int">
+      <column name="DEPT_ID"/>
+      <generator class="native"/>
+    </id>
+    <property name="name" type="java.lang.String">
+    </property>
+    <many-to-one class="model1.Manager" column="MAN_ID" foreign-key="FK_DEPT_MAN" name="manager" unique="true"/>
+    <set inverse="true" lazy="true" name="employees">
+      <key>
+        <column name="DEPT_ID"/>
+      </key>
+      <one-to-many class="model1.Employee"/>
+    </set>
+  </class>
+</hibernate-mapping>
