@@ -50,20 +50,30 @@ public final class DataLoad {
         Course englishCourse = new Course(CertificationType.COMMERCIAL_PILOT, LocalDate.now(),
                 LocalDate.of(1999, 9, 9), "description");
         FlightInstructor instructor = new FlightInstructor("Ismoil", "Atajanov", 1d, 101l, true, addressGliwiceTwo);
-        TheoryClass theoryClass = new TheoryClass("Derivatives", 1, 5);
+        TheoryClass theoryClass = new TheoryClass("flying class", 1, 5);
+        TheoryClass theoryClassOne = new TheoryClass("partking class", 2, 3);
         Student student = new Student("Brijesh", "Varsani", 453241d, addressGliwice, "medical tests");
         student.setCourse(mathCourse);
         student.setInstructor(instructor);
         student.getTheoryClasses().add(theoryClass);
+        student.getTheoryClasses().add(theoryClassOne);
         theoryClass.getStudents().add(student);
+        theoryClassOne.getStudents().add(student);
         Flight flight = new Flight(LocalDate.now(), "empty", instructor, student);
         student.getFlights().add(flight);
         instructor.getFlights().add(flight);
         session.save(student);
+
         Student studentOne = new Student("Vishal", "Indiani",
                 453221d, addressGliwice, "medical tests");
         studentOne.setCourse(mathCourse);
+        Flight flightOne = new Flight(LocalDate.now(), "student one flight", instructor, studentOne);
+        studentOne.getFlights().add(flightOne);
+        instructor.getFlights().add(flightOne);
+        theoryClassOne.getStudents().add(studentOne);
+        studentOne.getTheoryClasses().add(theoryClassOne);
         session.save(studentOne);
+
         Student studentTwo = new Student("Gofar", "CEO",
                 45021d, addressGliwice, "CEO need no tests");
         studentTwo.setCourse(mathCourse);

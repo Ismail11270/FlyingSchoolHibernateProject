@@ -1,10 +1,10 @@
 package hiberApp;
 
-import model.Person;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 
+import javax.persistence.Tuple;
 import java.util.List;
 
 public final class DataQueries {
@@ -15,23 +15,23 @@ public final class DataQueries {
      * @param SESSION_FACTORY for connecting data source
      */
 
-    public void showOsoby(SessionFactory SESSION_FACTORY) {
+    public void showPersons(SessionFactory SESSION_FACTORY) {
         try (Session session = SESSION_FACTORY.openSession()) {
             Query query = session.createQuery("select p from Person p");
-            List<Person> osoby = query.list();
-            osoby.stream().map(x -> x.toString()).forEach(System.out::println);
+            var persons = query.list();
+            persons.stream().map(x -> x.toString()).forEach(System.out::println);
         }
     }
 
     public void showCoursesStudents(SessionFactory SESSION_FACTORY) {
         try (Session session = SESSION_FACTORY.openSession()) {
-            Query query = session.createQuery("SELECT s.course, count(s)\n " +
+            Query query = session.createQuery("SELECT s.course.id, count(s)\n " +
                     "FROM Student s \n" +
-                    "GROUP BY s.course");
+                    "GROUP BY s.course.id", Tuple.class);
 
-            var osoby = query.getResultList();
-            System.out.println(osoby);
-//            osoby.stream().map( x -> x.toString() ).forEach(System.out::println);
+            List<Tuple> results = query.getResultList();
+            results.stream().map(x -> x.get(0) + " " + x.get(1)).forEach(System.out::println);
+//            results;
         }
     }
 

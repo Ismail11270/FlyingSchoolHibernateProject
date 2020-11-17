@@ -1,5 +1,7 @@
 package hiberApp;
 
+import model.Course;
+import model.FlightInstructor;
 import model.Student;
 import util.EMBuilder;
 
@@ -23,22 +25,25 @@ public final class MainAppJPA {
 
     public static void showAllStudents() {
         EntityManager em = EMBuilder.getEM();
-        List<Student> result = em.createQuery("select s from Student s").getResultList();
-        result.forEach(System.out::println);
-        System.out.println("=======================");
-        CriteriaBuilder builder = em.getCriteriaBuilder();
-        CriteriaQuery criteria = builder.createQuery(Student.class);
-        Root<Student> root = criteria.from(Student.class);
-        criteria.select(root);
-        result = em.createQuery(criteria).getResultList();
-        result.forEach(System.out::println);
+        System.out.println("============All Students===========");
+        var studentsList = em.createQuery("select s from Student s").getResultList();
+        studentsList.forEach(System.out::println);
 
+        System.out.println("============All Courses===========");
+        CriteriaBuilder builder = em.getCriteriaBuilder();
+        CriteriaQuery criteria = builder.createQuery(Course.class);
+        Root<Course> root = criteria.from(Course.class);
+        criteria.select(root);
+        var coursesList = em.createQuery(criteria).getResultList();
+        coursesList.forEach(System.out::println);
+
+        System.out.println("============All Instructors' Names===========");
         builder = em.getCriteriaBuilder();
         criteria = builder.createQuery(String.class);
-        root = criteria.from(Student.class);
+        root = criteria.from(FlightInstructor.class);
         criteria.select(root.get("firstName"));
-        List<String> names = em.createQuery(criteria).getResultList();
-        names.forEach(System.out::println);
+        var instructorNames = em.createQuery(criteria).getResultList();
+        instructorNames.forEach(System.out::println);
         em.close();
     }
 

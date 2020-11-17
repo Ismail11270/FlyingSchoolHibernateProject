@@ -93,4 +93,16 @@ public class Address {
     public void setPersons(Set<Person> persons) {
         this.persons = persons;
     }
+
+    @Override
+    public String toString() {
+        return "Address{" +
+                "id=" + id +
+                ", country='" + country + '\'' +
+                ", city='" + city + '\'' +
+                ", postalCode='" + postalCode + '\'' +
+                ", street='" + street + '\'' +
+                ", persons=" + persons +
+                '}';
+    }
 }
