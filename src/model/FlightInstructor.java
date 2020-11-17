@@ -10,25 +10,40 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name="FLIGHT_INSTRUCTORS")
+@Table(name = "FLIGHT_INSTRUCTORS")
 @OnDelete(action = OnDeleteAction.CASCADE)
 @PrimaryKeyJoinColumn(name = "INSTRUCTOR_ID", foreignKey = @ForeignKey(name = "FK_INSTRUCTOR_PERSON"))
-public class FlightInstructor extends Person{
+public class FlightInstructor extends Person {
 
-    @Column(name="LICENCE_NO", nullable = false)
+    @Column(name = "LICENCE_NO", nullable = false)
     private Long licenceNo;
 
-    @Column(name="VALID", nullable = false)
+    @Column(name = "VALID", nullable = false)
     @Convert(converter = BooleanConverter.class)
     private Boolean valid;
 
     @OneToMany(mappedBy = "instructor")
-    @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.PERSIST})
+    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
     private Set<Flight> flights = new HashSet<>();
 
     @OneToMany(mappedBy = "instructor")
-    @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.PERSIST})
+    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
     private Set<Student> students = new HashSet<>();
+
+    public FlightInstructor(Long licenceNo, Boolean valid){
+        this.licenceNo = licenceNo;
+        this.valid = valid;
+    }
+
+    public FlightInstructor(String firstName, String secondName, Double SSN, Long licenceNo, Boolean valid, Address address) {
+        super(firstName, secondName, SSN, address);
+        this.licenceNo = licenceNo;
+        this.valid = valid;
+    }
+
+    public FlightInstructor() {
+    }
+
 
     public Set<Flight> getFlights() {
         return flights;
@@ -44,15 +59,6 @@ public class FlightInstructor extends Person{
 
     public void setStudents(Set<Student> students) {
         this.students = students;
-    }
-
-    public FlightInstructor(String firstName, String secondName, Double SSN, Long licenceNo, Boolean valid, Address address) {
-        super(firstName, secondName, SSN, address);
-        this.licenceNo = licenceNo;
-        this.valid = valid;
-    }
-
-    public FlightInstructor() {
     }
 
     public Long getLicenceNo() {
@@ -72,8 +78,8 @@ public class FlightInstructor extends Person{
     }
 
     @PreRemove
-    public void preRemove(){
-        for(Flight flight : flights){
+    public void preRemove() {
+        for (Flight flight : flights) {
             flight.setInstructor(null);
         }
     }

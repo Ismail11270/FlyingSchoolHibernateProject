@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="model.Flight" table="FLIGHTS">
+        <id name="id" type="java.lang.Integer">
+            <column name="FLIGHT_ID"/>
+            <generator class="native"/>
+        </id>
+        <property name="description" type="java.lang.String" column="DESCRIPTION" length="250"/>
+        <property name="date" type="java.time.LocalDate" not-null="true" column="DATE"/>
+        <many-to-one cascade="save-update" class="model.Student" column="STUDENT_ID"
+                     foreign-key="FK_FLIGHT_STUDENT" name="student"/>
+        <many-to-one cascade="save-update" class="model.FlightInstructor" column="INSTRUCTOR_ID"
+                     foreign-key="FK_FLIGHT_INSTRUCTOR" name="instructor"/>
+    </class> 
+</hibernate-mapping>

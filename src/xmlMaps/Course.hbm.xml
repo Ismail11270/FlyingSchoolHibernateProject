@@ -7,26 +7,28 @@
             <column name="COURSE_ID"/>
             <generator class="native"/>
         </id>
-        <property name="certType" type="string">
-            <column name="CERT_TYPE"/>
+        <property name="certType" column="CERT_TYPE">
+            <type name="org.hibernate.type.EnumType">
+                <param name="enumClass">model.CertificationType</param>
+                <param name="useNamed">true</param>
+            </type>
         </property>
         <property name="description" type="string">
             <column name="DESCRIPTION"/>
         </property>
-        <property name="startDate" type="date">
+        <property name="startDate" type="java.time.LocalDate">
             <column name="START_DATE"/>
         </property>
-        <property name="endDate" type="date">
+        <property name="endDate" type="java.time.LocalDate">
             <column name="END_DATE"/>
         </property>
-        
-        <set name="students" table="COURSE_STUDENT" lazy="true" fetch="select" cascade="all">
+
+        <set name="students" table="COURSE_STUDENT" lazy="true" cascade="save-update" inverse="true">
             <key>
-                <column name="COURSE_ID" not-null="true"/>
+                <column name="COURSE_ID"/>
             </key>
-            <many-to-many entity-name="model.Student">
-                <column name="STUDENT_ID" not-null="true"/>
-            </many-to-many>
+            <one-to-many class="model.Student" />
+
         </set>
-    </class> 
+    </class>
 </hibernate-mapping>

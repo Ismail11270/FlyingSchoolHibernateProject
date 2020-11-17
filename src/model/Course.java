@@ -1,11 +1,11 @@
 package model;
 
+import goodies.CertTypeConverter;
 import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -13,11 +13,13 @@ import java.util.Set;
 public class Course {
 
     @Id
-    @Column(name = "course_id")
+    @Column(name = "COURSE_ID")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "CERT_TYPE", nullable = false)
+    @Convert(converter = CertTypeConverter.class)
     private CertificationType certType;
 
     @Column(name = "START_DATE")
@@ -29,12 +31,9 @@ public class Course {
     @Column(name = "DESCRIPTION")
     private String description;
 
-    @OneToMany(mappedBy = "course",orphanRemoval = true, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "course")
+    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
     private Set<Student> students = new HashSet<>();
-
-    public enum CertificationType {
-        SPORT_PILOT, RECREATIONAL_PILOT, PRIVATE_PILOT, COMMERCIAL_PILOT, FLIGHT_INSTRUCTOR, AIRLINE_TRANSPORT_PILOT
-    }
 
     public Course() {
     }
@@ -46,6 +45,14 @@ public class Course {
         this.endDate = endDate;
         this.description = description;
     }
+
+    public Course(CertificationType certType, LocalDate startDate, LocalDate endDate, String description) {
+        this.certType = certType;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.description = description;
+    }
+
 
     public int getId() {
         return id;
@@ -59,16 +66,16 @@ public class Course {
         return certType;
     }
 
+    public void setCertType(CertificationType certType) {
+        this.certType = certType;
+    }
+
     public Set<Student> getStudents() {
         return students;
     }
 
     public void setStudents(Set<Student> students) {
         this.students = students;
-    }
-
-    public void setCertType(CertificationType certType) {
-        this.certType = certType;
     }
 
     public LocalDate getStartDate() {
@@ -105,4 +112,5 @@ public class Course {
                 ", description='" + description + '\'' +
                 '}';
     }
+
 }

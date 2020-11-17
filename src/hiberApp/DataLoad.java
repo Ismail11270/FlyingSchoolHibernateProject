@@ -1,11 +1,4 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package hiberApp;
-
-import java.time.LocalDate;
-import java.util.HashSet;
 
 import model.*;
 import org.hibernate.Session;
@@ -14,9 +7,8 @@ import org.hibernate.Transaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/* 
- @author LabHiber
- */
+import java.time.LocalDate;
+
 public final class DataLoad {
 
     /**
@@ -24,10 +16,68 @@ public final class DataLoad {
      *
      * @param SESSION_FACTORY for connecting data source
      */
-    
+
     static Logger log = LoggerFactory.getLogger(DataLoad.class);
+
     protected void createData(SessionFactory SESSION_FACTORY) {
- 
+        try (Session session = SESSION_FACTORY.openSession()) {
+
+            Transaction tx = null;
+            try {
+                log.trace("insert person transaction begin");
+                tx = session.beginTransaction();
+                saveStudent(session);
+                tx.commit();
+                log.trace("insert person transaction commit");
+            } catch (Exception e) {
+                e.printStackTrace();
+                if (tx != null) {
+                    tx.rollback();
+                    log.trace(e.toString());
+                }
+            }
+//            tx = session.beginTransaction();
+//
+//            tx.commit();
+        }
+    }
+
+    private void saveStudent(Session session) {
+        Address addressGliwice = new Address("Poland", "Gliwice", "44-100", "Kujawska 2");
+        Address addressGliwiceTwo = new Address("Poland", "Gliwice", "44-100", "Kujawska 3");
+        Course mathCourse = new Course(CertificationType.AIRLINE_TRANSPORT_PILOT, LocalDate.now(),
+                LocalDate.of(1999, 9, 9), "description");
+        Course englishCourse = new Course(CertificationType.COMMERCIAL_PILOT, LocalDate.now(),
+                LocalDate.of(1999, 9, 9), "description");
+        FlightInstructor instructor = new FlightInstructor("Ismoil", "Atajanov", 1d, 101l, true, addressGliwiceTwo);
+        TheoryClass theoryClass = new TheoryClass("Derivatives", 1, 5);
+        Student student = new Student("Brijesh", "Varsani", 453241d, addressGliwice, "medical tests");
+        student.setCourse(mathCourse);
+        student.setInstructor(instructor);
+        student.getTheoryClasses().add(theoryClass);
+        theoryClass.getStudents().add(student);
+        Flight flight = new Flight(LocalDate.now(), "empty", instructor, student);
+        student.getFlights().add(flight);
+        instructor.getFlights().add(flight);
+        session.save(student);
+        Student studentOne = new Student("Vishal", "Indiani",
+                453221d, addressGliwice, "medical tests");
+        studentOne.setCourse(mathCourse);
+        session.save(studentOne);
+        Student studentTwo = new Student("Gofar", "CEO",
+                45021d, addressGliwice, "CEO need no tests");
+        studentTwo.setCourse(mathCourse);
+        session.save(studentTwo);
+
+        Student studentThree = new Student("Chinateng", "Chineseee",
+                41211d, addressGliwiceTwo, "fake tests");
+        studentThree.setCourse(englishCourse);
+
+        session.save(studentThree);
+    }
+
+    protected void createData1(SessionFactory SESSION_FACTORY) {
+
         try (Session session = SESSION_FACTORY.openSession()) {
 
             Transaction tx = null;
@@ -40,10 +90,10 @@ public final class DataLoad {
             } catch (Exception e) {
                 if (tx != null) {
                     tx.rollback();
-                    log.trace(e.toString()); 
+                    log.trace(e.toString());
                 }
-            }    
-                tx = session.beginTransaction();
+            }
+            tx = session.beginTransaction();
 
             Student student = new Student();
             student.setFirstName("Brijesh");
@@ -55,7 +105,7 @@ public final class DataLoad {
 //                session.save(address);
 
             Course course = new Course();
-            course.setCertType(Course.CertificationType.AIRLINE_TRANSPORT_PILOT);
+            course.setCertType(CertificationType.AIRLINE_TRANSPORT_PILOT);
             course.getStudents().add(student);
             FlightInstructor instructor = new FlightInstructor();
             instructor.setFirstName("Ismoil");
@@ -192,19 +242,19 @@ public final class DataLoad {
 //                dept1.setManager(man1);
 //                dept2.setManager(man2);
 //                dept3.setManager(man3);
-                tx.commit();
-            }
-
+            tx.commit();
         }
-        /**
-         * tworzy obiekty klasy Child i dodaje je do listy children
-         *
-         * @param address
-         * @param name
-         * @param surname
-         * @param birthDate
-         * @param children
-         */
+
+    }
+    /**
+     * tworzy obiekty klasy Child i dodaje je do listy children
+     *
+     * @param address
+     * @param name
+     * @param surname
+     * @param birthDate
+     * @param children
+     */
 //    private void createChild(Address address, String name,
 //            String surname, LocalDate birthDate, boolean learning,
 //            HashSet<Child> children) {

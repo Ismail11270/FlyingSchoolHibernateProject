@@ -3,13 +3,13 @@
 
 <hibernate-mapping>
     <class name="model.Address" table="ADDRESSES">
-        <id name="id" type="int">
+        <id name="id" type="java.lang.Integer">
             <column name="ADDRESS_ID"/>
             <generator class="native"/>
         </id>
-        <property name="country" type="java.lang.String"/>
-        <property name="city" type="java.lang.String"/>
-        <property name="postalCode" type="java.lang.String"/>
-        <property name="street" type="java.lang.String"/>
+        <property name="country" type="java.lang.String" length="20" column="COUNTRY"/>
+        <property name="city" type="java.lang.String" length="20" column="CITY"/>
+        <property name="postalCode" type="java.lang.String" length="10" column="POSTAL_CODE"/>
+        <property name="street" type="java.lang.String" length="50" column="STREET"/>
     </class>
 </hibernate-mapping>

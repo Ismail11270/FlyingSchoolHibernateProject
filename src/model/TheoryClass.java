@@ -4,23 +4,26 @@ import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@Table(name = "THEORY_CLASSES")
 public class TheoryClass implements Serializable {
 
     @Id
-    @Column (name = "CLASS_ID")
-    private int id;
+    @Column(name = "CLASS_ID")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-    @Column(name="NAME", nullable = false)
+    @Column(name = "NAME", nullable = false)
     private String name;
 
-    @Column(name="HOURS")
-    private int hours;
+    @Column(name = "HOURS")
+    private Integer hours;
 
-    @Column(name="GRADE")
-    private int grade;
+    @Column(name = "GRADE")
+    private Integer grade;
 
     @ManyToMany
     @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
@@ -29,10 +32,16 @@ public class TheoryClass implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "STUDENT_ID"),
             foreignKey = @javax.persistence.ForeignKey(name = "FK_CLASS_STUDENT"),
             inverseForeignKey = @javax.persistence.ForeignKey(name = "FK_STUDENT_CLASS"))
-    private Set<Student> students;
+    private Set<Student> students = new HashSet<>();
 
     public TheoryClass(int id, String name, int hours, int grade) {
         this.id = id;
+        this.name = name;
+        this.hours = hours;
+        this.grade = grade;
+    }
+
+    public TheoryClass(String name, int hours, int grade) {
         this.name = name;
         this.hours = hours;
         this.grade = grade;
@@ -49,11 +58,11 @@ public class TheoryClass implements Serializable {
         this.students = students;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -65,19 +74,19 @@ public class TheoryClass implements Serializable {
         this.name = name;
     }
 
-    public int getHours() {
+    public Integer getHours() {
         return hours;
     }
 
-    public void setHours(int hours) {
+    public void setHours(Integer hours) {
         this.hours = hours;
     }
 
-    public int getGrade() {
+    public Integer getGrade() {
         return grade;
     }
 
-    public void setGrade(int grade) {
+    public void setGrade(Integer grade) {
         this.grade = grade;
     }
 

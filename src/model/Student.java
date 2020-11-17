@@ -1,32 +1,36 @@
 package model;
 
 import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name="STUDENTS")
+@Table(name = "STUDENTS")
 @PrimaryKeyJoinColumn(name = "STUDENT_ID", foreignKey = @ForeignKey(name = "FK_STUDENT_PERSON"))
 public class Student extends Person {
 
     @Column(name = "MEDICAL_TESTS")
-    String medicalTests;
+    private String medicalTests;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "COURSE_ID")
-    Course course;
+    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
+    @JoinColumn(name = "COURSE_ID", foreignKey = @ForeignKey(name = "FK_STUDENT_COURSE"))
+    private Course course;
 
     @OneToMany(mappedBy = "student")
-    Set<Flight> flights;
+    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
+    private Set<Flight> flights = new HashSet<>();
 
     @ManyToOne
-    @JoinColumn(name = "INSTRUCTOR_ID")
-    FlightInstructor instructor;
+    @JoinColumn(name = "INSTRUCTOR_ID",  foreignKey = @ForeignKey(name = "FK_STUDENT_INSTRUCTOR"))
+    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
+    private FlightInstructor instructor;
 
     @ManyToMany(mappedBy = "students")
-    Set<TheoryClass> theoryClasses;
+    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
+    private Set<TheoryClass> theoryClasses = new HashSet<>();
 
     public Student(String medicalTests) {
         this.medicalTests = medicalTests;
@@ -89,9 +93,18 @@ public class Student extends Person {
     }
 
     @PreRemove
-    public void preRemove(){
-        for(Flight flight : flights){
-            flight.setInstructor(null);
+    public void preRemove() {
+        for (Flight flight : flights) {
+            flight.setStudent(null);
         }
+    }
+
+    @Override
+    public String toString() {
+        return "Student{" +
+                "medicalTests='" + medicalTests + '\'' +
+                ", course=" + course +
+                ", instructor=" + instructor +
+                '}';
     }
 }

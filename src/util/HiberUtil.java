@@ -55,7 +55,7 @@ public final class HiberUtil {
             File mappingDir = new File("src\\xmlMaps");
             Configuration config = new Configuration().configure();
 
-            config.setProperty("hibernate.show_sql", "false");
+            config.setProperty("hibernate.show_sql", "true");
             config.addDirectory(mappingDir);
             SessionFactory sf = config.buildSessionFactory();
 

@@ -3,28 +3,28 @@ package model;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Date;
 
 @Entity
-@Table(name="flights")
-public class Flight implements Serializable  {
+@Table(name = "flights")
+public class Flight implements Serializable {
 
     @Id
-    @Column(name="flight_id")
+    @Column(name = "FLIGHT_ID")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name="DATE", nullable = false)
+    @Column(name = "DATE", nullable = false)
     private LocalDate date;
 
-    @Column(name="DESCRIPTION")
+    @Column(name = "DESCRIPTION", length = 250)
     private String description;
 
     @ManyToOne
-    @JoinColumn(name="INSTRUCTOR_ID", foreignKey = @ForeignKey(name = "FK_FLIGHT_INSTRUCTOR_ID"), nullable = false)
+    @JoinColumn(name = "INSTRUCTOR_ID", foreignKey = @ForeignKey(name = "FK_FLIGHT_INSTRUCTOR"))
     private FlightInstructor instructor;
 
     @ManyToOne
-    @JoinColumn(name="STUDENT_ID", foreignKey = @ForeignKey(name = "FK_FLIGHT_STUDENT_ID"), nullable = false)
+    @JoinColumn(name = "STUDENT_ID", foreignKey = @ForeignKey(name = "FK_FLIGHT_STUDENT"))
     private Student student;
 
     public Flight() {
@@ -34,6 +34,21 @@ public class Flight implements Serializable  {
         this.id = id;
         this.date = date;
         this.description = description;
+    }
+
+    public Flight(int id, LocalDate date, String description, FlightInstructor instructor, Student student) {
+        this.id = id;
+        this.date = date;
+        this.description = description;
+        this.instructor = instructor;
+        this.student = student;
+    }
+
+    public Flight(LocalDate date, String description, FlightInstructor instructor, Student student) {
+        this.date = date;
+        this.description = description;
+        this.instructor = instructor;
+        this.student = student;
     }
 
     public int getId() {

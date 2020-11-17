@@ -17,7 +17,13 @@
     <!--<property name="hibernate.show_sql">true</property>-->
     <!--<property name="hibernate.format_sql">true</property>-->
     <!--database structure synchronization-->
-    <property name="hibernate.hbm2ddl.auto">create</property>
-    
+    <property name="hibernate.hbm2ddl.auto">update</property>
+    <mapping class="model.TheoryClass"/>
+    <mapping class="model.FlightInstructor"/>
+    <mapping class="model.Flight"/>
+    <mapping class="model.Course"/>
+    <mapping class="model.Student"/>
+    <mapping class="model.Person"/>
+    <mapping class="model.Address"/>
   </session-factory>
 </hibernate-configuration>

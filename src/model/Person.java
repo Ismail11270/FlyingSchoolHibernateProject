@@ -38,6 +38,14 @@ public class Person {
         this.address = address;
     }
 
+    public Person(int id, String firstName, String secondName, Double SSN, Address address) {
+        this.id = id;
+        this.firstName = firstName;
+        this.secondName = secondName;
+        this.SSN = SSN;
+        this.address = address;
+    }
+
     public String getFirstName() {
         return firstName;
     }

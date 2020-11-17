@@ -9,7 +9,7 @@ public class EMBuilder {
     private final static EntityManagerFactory FACTORY;
 
     static {
-        FACTORY = Persistence.createEntityManagerFactory("labPU");
+        FACTORY = Persistence.createEntityManagerFactory("project");
     }
 
     public static EntityManager getEM() {

@@ -1,10 +1,7 @@
 package model;
 
-import org.hibernate.annotations.Cascade;
-
 import javax.persistence.*;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -13,8 +10,8 @@ public class Address {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="ID")
-    private int id;
+    @Column(name="ADDRESS_ID")
+    private Integer id;
 
     @Column(name="COUNTRY", length = 20)
     private String country;
@@ -34,7 +31,7 @@ public class Address {
     public Address() {
     }
 
-    public Address(int id, String country, String city, String postalCode, String street) {
+    public Address(Integer id, String country, String city, String postalCode, String street) {
         this.id = id;
         this.country = country;
         this.city = city;
@@ -42,11 +39,18 @@ public class Address {
         this.street = street;
     }
 
-    public int getId() {
+    public Address(String country, String city, String postalCode, String street) {
+        this.country = country;
+        this.city = city;
+        this.postalCode = postalCode;
+        this.street = street;
+    }
+
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

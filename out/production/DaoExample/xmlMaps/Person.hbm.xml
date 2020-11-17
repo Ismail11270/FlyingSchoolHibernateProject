@@ -7,11 +7,11 @@
             <column name="PERSON_ID"/>
             <generator class="native"/>
         </id>
-        <property name="firstName" type="java.lang.String"/>
-        <property name="secondName" type="java.lang.String"/>
-        <property name="SSN" type="java.lang.Double"/>
+        <property name="firstName" type="java.lang.String" not-null="true" column="FIRST_NAME"/>
+        <property name="secondName" type="java.lang.String" not-null="true" column="SECOND_NAME"/>
+        <property name="SSN" type="java.lang.Double" unique="true" column="SSN"/>
         <many-to-one name="address" entity-name="model.Address"
-                     column="ADDRESS_ID" not-null="true"
-                     cascade="all"/>
+                     column="ADDRESS_ID" foreign-key="FK_PERSON_ADDRESS_ID"
+                     cascade="save-update"/>
     </class>
 </hibernate-mapping>

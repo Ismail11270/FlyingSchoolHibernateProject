@@ -1,21 +1,15 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package hiberApp;
 
-import model1.*;
-import java.util.List;
-import org.hibernate.query.Query;
+import model.Person;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 
-/* 
- @author LabHiber
- */
+import java.util.List;
+
 public final class DataQueries {
-    
-     /**
+
+    /**
      * Queries test data
      *
      * @param SESSION_FACTORY for connecting data source
@@ -23,14 +17,22 @@ public final class DataQueries {
 
     public void showOsoby(SessionFactory SESSION_FACTORY) {
         try (Session session = SESSION_FACTORY.openSession()) {
-            Query query = session.createQuery("select o from Osoba o");
+            Query query = session.createQuery("select p from Person p");
             List<Person> osoby = query.list();
-            osoby.stream().forEach((osoba) -> {
-                System.out.println(osoba.getName() + " " + osoba.getSurname()
-                        + " " + osoba.getAge());
-            });
+            osoby.stream().map(x -> x.toString()).forEach(System.out::println);
         }
+    }
 
+    public void showCoursesStudents(SessionFactory SESSION_FACTORY) {
+        try (Session session = SESSION_FACTORY.openSession()) {
+            Query query = session.createQuery("SELECT s.course, count(s)\n " +
+                    "FROM Student s \n" +
+                    "GROUP BY s.course");
+
+            var osoby = query.getResultList();
+            System.out.println(osoby);
+//            osoby.stream().map( x -> x.toString() ).forEach(System.out::println);
+        }
     }
 
     public void showAll(SessionFactory SESSION_FACTORY) {
