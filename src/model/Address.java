@@ -5,24 +5,24 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name="ADDRESSES")
+@Table(name = "ADDRESSES")
 public class Address {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="ADDRESS_ID")
+    @Column(name = "ADDRESS_ID")
     private Integer id;
 
-    @Column(name="COUNTRY", length = 20)
+    @Column(name = "COUNTRY", length = 20)
     private String country;
 
-    @Column(name="CITY", length = 20)
+    @Column(name = "CITY", length = 20)
     private String city;
 
-    @Column(name="POSTAL_CODE", length = 10)
+    @Column(name = "POSTAL_CODE", length = 10)
     private String postalCode;
 
-    @Column(name="STREET", length = 50)
+    @Column(name = "STREET", length = 50)
     private String street;
 
     @OneToMany(mappedBy = "address")
@@ -102,7 +102,6 @@ public class Address {
                 ", city='" + city + '\'' +
                 ", postalCode='" + postalCode + '\'' +
                 ", street='" + street + '\'' +
-                ", persons=" + persons +
                 '}';
     }
 }

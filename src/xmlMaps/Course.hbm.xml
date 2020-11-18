@@ -7,7 +7,7 @@
             <column name="COURSE_ID"/>
             <generator class="native"/>
         </id>
-        <property name="certType" column="CERT_TYPE">
+        <property name="certType" column="CERT_TYPE" unique="true" unique-key="UK_CERT_TYPE">
             <type name="org.hibernate.type.EnumType">
                 <param name="enumClass">model.CertificationType</param>
                 <param name="useNamed">true</param>

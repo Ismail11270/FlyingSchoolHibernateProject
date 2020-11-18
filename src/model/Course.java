@@ -18,7 +18,7 @@ public class Course {
     private int id;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "CERT_TYPE", nullable = false)
+    @Column(name = "CERT_TYPE", nullable = false, unique = true )
     @Convert(converter = CertTypeConverter.class)
     private CertificationType certType;
 

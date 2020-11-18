@@ -26,7 +26,8 @@ public final class DataLoad {
             try {
                 log.trace("insert person transaction begin");
                 tx = session.beginTransaction();
-                saveStudent(session);
+                addStuff(session);
+                addStudents(session);
                 tx.commit();
                 log.trace("insert person transaction commit");
             } catch (Exception e) {
@@ -42,7 +43,17 @@ public final class DataLoad {
         }
     }
 
-    private void saveStudent(Session session) {
+    private void addStudents(Session session) {
+        Address addressBerlin = new Address("Germany", "Berlin", "4230", "Ein zwei str");
+        Student student = new Student("German", "Guy", 43441d, addressBerlin, "medical tests");
+        Address addressLondon = new Address("UK", "London", "123", "Breakfast street");
+        Student studentBritish = new Student("British", "Student", 41234d, addressLondon, "medical tests");
+
+        session.save(student);
+        session.save(studentBritish);
+    }
+
+    private void addStuff(Session session) {
         Address addressGliwice = new Address("Poland", "Gliwice", "44-100", "Kujawska 2");
         Address addressGliwiceTwo = new Address("Poland", "Gliwice", "44-100", "Kujawska 3");
         Course mathCourse = new Course(CertificationType.AIRLINE_TRANSPORT_PILOT, LocalDate.now(),
