@@ -4,13 +4,14 @@ import goodies.CertTypeConverter;
 import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "COURSES")
-public class Course {
+public class Course implements Serializable {
 
     @Id
     @Column(name = "COURSE_ID")

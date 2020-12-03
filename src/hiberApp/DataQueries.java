@@ -36,7 +36,7 @@ public final class DataQueries {
     public void showStudentsFromPoland( SessionFactory SESSION_FACTORY ) {
         System.out.println( "\n======Name and City for students who live in Poland======" );
         try ( Session session = SESSION_FACTORY.openSession( ) ) {
-            Query query = session.createQuery( "SELECT p.firstName , a.city FROM Person p , Address a WHERE p.address = a.id AND a.country = 'Poland' ", Tuple.class );
+            Query query = session.createQuery( "SELECT p.firstName , p.address.city FROM Person p WHERE p.address.country = 'Poland' ", Tuple.class );
             List<Tuple> results = query.getResultList( );
             results.stream( ).map( x -> "Name: " + x.get( 0 ) + " ," + " City: " + x.get( 1 ) ).forEach( System.out::println );
         }
@@ -44,23 +44,22 @@ public final class DataQueries {
 
     /**
      * IDs and Names of students attending AIRLINE_TRANSPORT_PILOT Course that have at least 2 theory classes
-     * implicit join
+     * implicit join and aggregation
      * @param SESSION_FACTORY
      */
-    public void showStudentsFromCourseWithMoreThanTwoClasses( SessionFactory SESSION_FACTORY){
+    public void showStudentsFromCourseWithMoreThanTwoClasses( SessionFactory SESSION_FACTORY) {
         System.out.println( "\n======Students attending AIRLINE_TRANSPORT_PILOT Course that have at least 2 theory classes======" );
         try ( Session session = SESSION_FACTORY.openSession( ) ) {
             Query query = session.createQuery( "SELECT s.id, s.firstName " +
-                    "FROM Course c " +
-                    "INNER JOIN Student s ON c.id = s.course.id " +
-                    "INNER JOIN s.theoryClasses t " +
-                    "WHERE c.certType='" + CertificationType.AIRLINE_TRANSPORT_PILOT +"' " +
+                    "FROM Student s " +
+                    "WHERE s.course.certType='" + CertificationType.AIRLINE_TRANSPORT_PILOT + "' " +
                     "GROUP BY s.id, s.firstName " +
-                    "HAVING COUNT(t) > 1", Tuple.class );
+                    "HAVING s.theoryClasses.size > 1", Tuple.class );
             List<Tuple> results = query.getResultList( );
-            results.forEach( x->System.out.println("ID: " + x.get(0) + ", " + "Name: " + x.get(1) ) );
+            results.forEach( x -> System.out.println( "ID: " + x.get( 0 ) + ", " + "Name: " + x.get( 1 ) ) );
         }
     }
+
 
     /**
      * Show number of students for each type of course
@@ -70,9 +69,9 @@ public final class DataQueries {
     public void showCoursesStudents( SessionFactory SESSION_FACTORY ) {
         System.out.println( "\n======Number of students for each course type======" );
         try ( Session session = SESSION_FACTORY.openSession( ) ) {
-            Query query = session.createQuery( "SELECT c.certType, count(s)\n " +
-                    "FROM Student s inner join Course c on s.course.id = c.id \n" +
-                    "GROUP BY c.certType", Tuple.class );
+            Query query = session.createQuery( "SELECT s.course.certType, count(s.id)\n " +
+                    "FROM Student s\n" +
+                    "GROUP BY s.course.certType", Tuple.class );
 
             List<Tuple> results = query.getResultList( );
             results.stream( ).map( x -> "Course Type: " + x.get( 0 ) + ", Number of students: " + x.get( 1 ) ).forEach( System.out::println );
